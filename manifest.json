@@ -1,0 +1,24 @@
+{
+  "name": "Progress IQ",
+  "short_name": "Progress IQ",
+  "description": "Body \u00b7 Nutrition \u00b7 Training \u00b7 Health",
+  "start_url": "/app.html",
+  "display": "standalone",
+  "background_color": "#07090A",
+  "theme_color": "#07090A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-v2-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-v2-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
