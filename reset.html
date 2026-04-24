@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Progress IQ — Reset Password</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07090A;--bg1:#0E1214;--bg2:#161C1F;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);--text:#D6E4E0;--text2:#7A9490;--text3:#4A6460;--accent:#00E676;--adim:rgba(0,230,118,.11);--red:#FF5252;--r:10px;--rl:16px;}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;display:flex;align-items:center;justify-content:center}
+.wrap{width:100%;max-width:420px;padding:24px 20px}
+.logo{text-align:center;margin-bottom:40px}
+.logo-mark{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:.04em;color:var(--accent);text-transform:uppercase}
+.logo-sub{font-size:12px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--rl);padding:28px}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--text3);margin-bottom:22px;line-height:1.5}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:5px}
+.field input{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;transition:border-color .14s;width:100%}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--adim)}
+.field input::placeholder{color:var(--text3)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;transition:all .14s;border:none;font-family:'DM Sans',sans-serif;width:100%}
+.btn-p{background:var(--accent);color:#000;margin-top:6px}.btn-p:hover{background:#33EE8B}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.msg{border-radius:var(--r);padding:12px 14px;font-size:13px;margin-top:12px;display:none;line-height:1.5}
+.msg-ok{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);color:var(--accent)}
+.msg-err{background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.25);color:var(--red)}
+.msg.show{display:block}
+.back{text-align:center;margin-top:18px;font-size:13px;color:var(--text3)}
+.back a{color:var(--accent);cursor:pointer;text-decoration:none;font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-mark">Progress IQ</div>
+    <div class="logo-sub">Body · Nutrition · Training</div>
+  </div>
+
+  <!-- Request reset -->
+  <div id="panel-request">
+    <div class="card">
+      <div class="card-title">Reset password</div>
+      <div class="card-sub">Enter your email and we'll send you a reset link.</div>
+      <div class="field"><label>Email</label><input type="email" id="r-email" placeholder="you@example.com" autocomplete="email"/></div>
+      <button class="btn btn-p" onclick="doReset()" id="r-btn">Send reset link</button>
+      <div class="msg msg-ok" id="r-ok">Check your email — reset link sent. You can close this tab.</div>
+      <div class="msg msg-err" id="r-err"></div>
+    </div>
+    <div class="back"><a href="index.html">← Back to sign in</a></div>
+  </div>
+
+  <!-- New password (after clicking email link) -->
+  <div id="panel-newpass" style="display:none">
+    <div class="card">
+      <div class="card-title">New password</div>
+      <div class="card-sub">Choose a new password for your account.</div>
+      <div class="field"><label>New password</label><input type="password" id="np-pass" placeholder="At least 6 characters" autocomplete="new-password"/></div>
+      <div class="field"><label>Confirm password</label><input type="password" id="np-pass2" placeholder="Repeat password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doNewPass()"/></div>
+      <button class="btn btn-p" onclick="doNewPass()" id="np-btn">Set new password</button>
+      <div class="msg msg-ok" id="np-ok">Password updated! <a href="index.html" style="color:var(--accent)">Sign in →</a></div>
+      <div class="msg msg-err" id="np-err"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SUPA_URL = 'https://ihguwzmglzlgzaodwrrp.supabase.co';
+var SUPA_KEY = 'sb_publishable_eQMlmxbWZnyTeb7APkODXQ_hZxIjuv_';
+var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// If there's a hash fragment with access_token, show the new password panel
+sb.auth.onAuthStateChange(function(event) {
+  if (event === 'PASSWORD_RECOVERY') {
+    document.getElementById('panel-request').style.display = 'none';
+    document.getElementById('panel-newpass').style.display = 'block';
+  }
+});
+
+async function doReset() {
+  var email = document.getElementById('r-email').value.trim();
+  if (!email) { showMsg('r-err','Please enter your email'); return; }
+  document.getElementById('r-btn').disabled = true;
+  var r = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset.html'
+  });
+  if (r.error) { showMsg('r-err', r.error.message); document.getElementById('r-btn').disabled=false; }
+  else showMsg('r-ok');
+}
+
+async function doNewPass() {
+  var pass  = document.getElementById('np-pass').value;
+  var pass2 = document.getElementById('np-pass2').value;
+  if (pass.length < 6) { showMsg('np-err','Password must be at least 6 characters'); return; }
+  if (pass !== pass2)  { showMsg('np-err','Passwords do not match'); return; }
+  document.getElementById('np-btn').disabled = true;
+  var r = await sb.auth.updateUser({ password: pass });
+  if (r.error) { showMsg('np-err', r.error.message); document.getElementById('np-btn').disabled=false; }
+  else showMsg('np-ok');
+}
+
+function showMsg(id, text) {
+  var el = document.getElementById(id);
+  if (text) el.textContent = text;
+  el.classList.add('show');
+}
+</script>
+</body>
+</html>
