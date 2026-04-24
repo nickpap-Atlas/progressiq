@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#07090A"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Progress IQ"/>
+  <link rel="apple-touch-icon" href="icon-v2-192.png"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Progress IQ — Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090A;--bg1:#0E1214;--bg2:#161C1F;--bg3:#1E2529;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --text:#D6E4E0;--text2:#7A9490;--text3:#4A6460;
+  --accent:#00E676;--adim:rgba(0,230,118,.11);--amid:rgba(0,230,118,.3);
+  --red:#FF5252;--amber:#FFB74D;--blue:#4FC3F7;--purple:#CE93D8;
+  --r:10px;--rl:16px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6}
+::selection{background:var(--accent);color:#000}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:4px}
+.wrap{max-width:660px;margin:0 auto;padding:40px 20px 80px}
+.progress{display:flex;align-items:center;gap:8px;margin-bottom:40px}
+.ps{width:28px;height:28px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text3);transition:all .3s;flex-shrink:0}
+.ps.done{background:var(--accent);border-color:var(--accent);color:#000}
+.ps.active{border-color:var(--accent);color:var(--accent)}
+.pl{flex:1;height:1px;background:var(--border);transition:background .3s}
+.pl.done{background:var(--accent)}
+.plabel{font-size:10px;color:var(--text3);text-align:center;margin-top:4px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--rl);padding:26px;margin-bottom:14px}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-size:25px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:3px}
+.card-sub{font-size:13px;color:var(--text3);margin-bottom:22px;line-height:1.5}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:5px}
+.field input,.field select{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;transition:border-color .14s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--adim)}
+.field input::placeholder{color:var(--text3)}
+.field select option{background:var(--bg2)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;transition:all .14s;border:none;font-family:'DM Sans',sans-serif}
+.btn-p{background:var(--accent);color:#000}.btn-p:hover{background:#33EE8B}
+.btn-p:disabled{opacity:.45;cursor:not-allowed}
+.btn-g{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}.btn-g:hover{color:var(--text);background:var(--bg3)}
+.brow{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.bf-gauge{text-align:center;padding:18px 0}
+.bf-num{font-family:'Barlow Condensed',sans-serif;font-size:68px;font-weight:700;line-height:1;margin-bottom:3px}
+.comp-bar{height:16px;border-radius:8px;overflow:hidden;display:flex;margin:10px 0;background:var(--bg3)}
+.comp-seg{height:100%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.comp-leg{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.cli{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)}
+.cdot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.rec-box{border-radius:var(--rl);padding:16px 18px;margin:14px 0;border:1px solid}
+.rec-box.cut{background:rgba(255,82,82,.09);border-color:rgba(255,82,82,.22);color:var(--red)}
+.rec-box.bulk{background:rgba(79,195,247,.08);border-color:rgba(79,195,247,.22);color:var(--blue)}
+.rec-box.recomp{background:rgba(255,183,77,.09);border-color:rgba(255,183,77,.22);color:var(--amber)}
+.rec-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:3px}
+.rec-body{font-size:13px;opacity:.85;line-height:1.5}
+.goal-grid{display:flex;flex-direction:column;gap:7px;margin:6px 0}
+.gc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:13px 16px;cursor:pointer;transition:all .14s;display:flex;align-items:center;gap:12px}
+.gc:hover{border-color:var(--border2);background:var(--bg3)}
+.gc.sel{border-color:var(--accent);background:var(--adim)}
+.gc-radio{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .14s}
+.gc.sel .gc-radio{border-color:var(--accent);background:var(--accent)}
+.gc-dot{width:7px;height:7px;border-radius:50%;background:#000;display:none}
+.gc.sel .gc-dot{display:block}
+.gpill{font-size:10px;padding:2px 7px;border-radius:8px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.pg{background:rgba(0,230,118,.11);color:var(--accent)}
+.pa{background:rgba(255,183,77,.11);color:var(--amber)}
+.pr{background:rgba(255,82,82,.11);color:var(--red)}
+.pb{background:rgba(79,195,247,.09);color:var(--blue)}
+.plan-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px}
+.ps2{background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);padding:13px 14px;text-align:center}
+.psv{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;line-height:1}
+.psv.g{color:var(--accent)}.psv.a{color:var(--amber)}.psv.p{color:var(--purple)}.psv.b{color:var(--blue)}
+.psl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.ptable{width:100%;border-collapse:collapse}
+.ptable th{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);padding:7px 11px;text-align:left;border-bottom:1px solid var(--border);font-weight:500}
+.ptable td{padding:9px 11px;border-bottom:1px solid var(--border);font-size:13px}
+.ptable tr:last-child td{border-bottom:none}
+.mc-row{display:flex;gap:5px;flex-wrap:wrap}
+.mc{font-family:'DM Mono',monospace;font-size:11px;padding:2px 7px;border-radius:5px}
+.mc-c{background:rgba(0,230,118,.1);color:var(--accent)}
+.mc-p{background:rgba(79,195,247,.1);color:var(--blue)}
+.mc-cb{background:rgba(255,183,77,.1);color:var(--amber)}
+.mc-f{background:rgba(244,143,177,.1);color:#F48FB1}
+.insight{background:var(--bg2);border-left:2px solid var(--accent);border-radius:0 var(--r) var(--r) 0;padding:11px 14px;margin:11px 0;font-size:13px;color:var(--text2);line-height:1.5}
+.insight strong{color:var(--text);font-weight:500}
+.step{display:none}.step.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.step.active .card{animation:fadeUp .3s ease both}
+.step.active .card:nth-child(2){animation-delay:.05s}
+@media(max-width:580px){.fr,.fr3{grid-template-columns:1fr}.plan-hero{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="progress">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="ps active" id="ps1">1</div><div class="plabel">Profile</div></div>
+    <div class="pl" id="pl1"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="ps" id="ps2">2</div><div class="plabel">Body comp</div></div>
+    <div class="pl" id="pl2"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="ps" id="ps3">3</div><div class="plabel">Goal</div></div>
+    <div class="pl" id="pl3"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="ps" id="ps4">4</div><div class="plabel">Plan</div></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step-1">
+    <div class="card">
+      <div class="card-title">Your profile</div>
+      <div class="card-sub">Used to calculate your body composition and set accurate nutrition targets. Only filled in once.</div>
+      <div class="fr"><div class="field"><label>Age</label><input type="number" id="s1-age" placeholder="35"/></div>
+        <div class="field"><label>Sex</label><select id="s1-sex"><option value="1">Male</option><option value="0">Female</option></select></div></div>
+      <div class="fr"><div class="field"><label>Height (cm)</label><input type="number" id="s1-height" placeholder="178" step="0.5"/></div>
+        <div class="field"><label>Activity level</label>
+          <select id="s1-activity">
+            <option value="1.2">Sedentary + lifting</option>
+            <option value="1.35" selected>Lightly active + lifting</option>
+            <option value="1.55">Moderately active + lifting</option>
+            <option value="1.75">Very active + lifting</option>
+          </select></div></div>
+      <div class="brow"><button class="btn btn-p" onclick="goStep2()">Next <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></button></div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2">
+    <div class="card">
+      <div class="card-title">Current body composition</div>
+      <div class="card-sub">Enter your weight. We'll estimate body fat using the Deurenberg formula, or enter a known BF% to override.</div>
+      <div class="fr">
+        <div class="field"><label>Current weight (kg)</label><input type="number" id="s2-wt" placeholder="78.0" step="0.1" oninput="liveComp()"/></div>
+        <div class="field"><label>Known BF% (optional)</label><input type="number" id="s2-bf-ov" placeholder="Auto-calculated" step="0.5" oninput="liveComp()"/></div>
+      </div>
+      <div id="comp-out" style="display:none">
+        <div class="bf-gauge"><div class="bf-num" id="bf-num">—</div><div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)">Body fat %</div><div id="bf-tag-wrap" style="margin-top:6px"></div></div>
+        <div class="comp-bar" id="comp-bar"></div>
+        <div class="comp-leg" id="comp-leg"></div>
+        <div class="rec-box" id="rec-box" style="margin-top:14px"></div>
+      </div>
+      <div class="brow">
+        <button class="btn btn-g" onclick="goStep(1)">Back</button>
+        <button class="btn btn-p" id="s2-next" onclick="goStep3()" disabled>Next <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3">
+    <div class="card">
+      <div class="card-title">Choose your goal</div>
+      <div class="card-sub" id="s3-sub"></div>
+      <div class="goal-grid" id="goal-grid"></div>
+      <div class="brow">
+        <button class="btn btn-g" onclick="goStep(2)">Back</button>
+        <button class="btn btn-p" id="s3-next" onclick="goStep4()" disabled>Build my plan <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4">
+    <div class="card" id="plan-card"></div>
+    <div class="brow">
+      <button class="btn btn-g" onclick="goStep(3)">Back</button>
+      <button class="btn btn-p" id="apply-btn" onclick="applyPlan()">Save &amp; go to tracker <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SUPA_URL = 'https://ihguwzmglzlgzaodwrrp.supabase.co';
+var SUPA_KEY = 'sb_publishable_eQMlmxbWZnyTeb7APkODXQ_hZxIjuv_';
+var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+var P = {}, selectedGoal = null, plan = null, USER = null;
+
+sb.auth.getSession().then(function(r) {
+  if (!r.data.session) { window.location.href = 'index.html'; return; }
+  USER = r.data.session.user;
+  // Pre-fill name from metadata
+  var meta = USER.user_metadata;
+  if (meta && meta.name) P.name = meta.name;
+});
+
+function goStep(n) {
+  for (var i = 1; i <= 4; i++) {
+    document.getElementById('step-'+i).classList.toggle('active', i===n);
+    var ps = document.getElementById('ps'+i);
+    if (i < n) { ps.className='ps done'; ps.innerHTML='✓'; }
+    else if (i===n) { ps.className='ps active'; ps.innerHTML=i; }
+    else { ps.className='ps'; ps.innerHTML=i; }
+    if (i < 4) document.getElementById('pl'+i).className='pl'+(i<n?' done':'');
+  }
+  window.scrollTo(0,0);
+}
+
+function calcBF(wt, ht, age, sex) {
+  var bmi = wt / Math.pow(ht/100, 2);
+  return Math.max(3, Math.round(((1.20*bmi)+(0.23*age)-(10.8*sex)-5.4)*10)/10);
+}
+function calcTDEE(wt, bf, act) {
+  var lbm=wt*(1-bf/100), fm=wt*(bf/100);
+  var rmr=12*(lbm*2.2046)+2*(fm*2.2046);
+  return {tdee:Math.round(rmr*act), rmr:Math.round(rmr), lbm:lbm, fm:fm};
+}
+function targetWt(lbm, tBf) { return lbm/(1-tBf/100); }
+function bfCat(bf, sex) {
+  if (sex==1) {
+    if (bf<6)  return {label:'Essential fat', cls:'pr', rec:'bulk', col:'#FF5252'};
+    if (bf<10) return {label:'Very lean',     cls:'pb', rec:'bulk', col:'#4FC3F7'};
+    if (bf<13) return {label:'Lean / abs visible', cls:'pg', rec:'recomp', col:'#00E676'};
+    if (bf<17) return {label:'Athletic / fit', cls:'pg', rec:'recomp', col:'#00E676'};
+    if (bf<21) return {label:'Average',        cls:'pa', rec:'cut', col:'#FFB74D'};
+    return            {label:'High body fat',  cls:'pr', rec:'cut', col:'#FF5252'};
+  } else {
+    if (bf<14) return {label:'Essential fat', cls:'pr', rec:'bulk', col:'#FF5252'};
+    if (bf<18) return {label:'Athletic',      cls:'pb', rec:'recomp', col:'#4FC3F7'};
+    if (bf<22) return {label:'Fit / lean',    cls:'pg', rec:'recomp', col:'#00E676'};
+    if (bf<26) return {label:'Average',       cls:'pa', rec:'cut', col:'#FFB74D'};
+    return            {label:'High body fat', cls:'pr', rec:'cut', col:'#FF5252'};
+  }
+}
+function goalOpts(sex, curBf) {
+  var m = sex==1;
+  var all = m ? [
+    {pct:8, name:'Stage lean',    desc:'Competition physique. Very hard to maintain.', pill:'pr', pt:'Very hard'},
+    {pct:10,name:'Abs visible',   desc:'Clear six-pack. Requires strict discipline.',  pill:'pa', pt:'Hard'},
+    {pct:12,name:'Lean & defined',desc:'Ab outline visible. Most people\'s goal.',     pill:'pg', pt:'Achievable'},
+    {pct:15,name:'Athletic',      desc:'Fit and muscular. Sustainable with training.', pill:'pg', pt:'Sustainable'},
+    {pct:18,name:'Healthy / fit', desc:'Great health markers. Easy to maintain.',      pill:'pb', pt:'Easy to hold'},
+  ] : [
+    {pct:16,name:'Stage lean',   desc:'Competition-level leanness.',    pill:'pr', pt:'Very hard'},
+    {pct:18,name:'Lean',         desc:'Clear muscle definition.',       pill:'pa', pt:'Hard'},
+    {pct:21,name:'Athletic',     desc:'Fit appearance, toned.',         pill:'pg', pt:'Achievable'},
+    {pct:24,name:'Healthy',      desc:'Great health, easy to maintain.',pill:'pb', pt:'Sustainable'},
+  ];
+  return all.filter(function(g){return g.pct < curBf-1;});
+}
+
+function goStep2() {
+  var age=parseInt(document.getElementById('s1-age').value);
+  var ht=parseFloat(document.getElementById('s1-height').value);
+  var sex=parseFloat(document.getElementById('s1-sex').value);
+  var act=parseFloat(document.getElementById('s1-activity').value);
+  if(!age||!ht){alert('Please enter age and height');return;}
+  P.age=age; P.height=ht; P.sex=sex; P.activity=act;
+  goStep(2);
+}
+
+function liveComp() {
+  var wt=parseFloat(document.getElementById('s2-wt').value);
+  var ov=parseFloat(document.getElementById('s2-bf-ov').value);
+  if(!wt||wt<30||wt>300){document.getElementById('comp-out').style.display='none';document.getElementById('s2-next').disabled=true;return;}
+  var bf=(!isNaN(ov)&&ov>0)?ov:calcBF(wt,P.height,P.age,P.sex);
+  bf=Math.round(bf*10)/10;
+  P.weight=wt; P.bf=bf; P.lbm=wt*(1-bf/100); P.fm=wt*(bf/100);
+  var cat=bfCat(bf,P.sex);
+  var td=calcTDEE(wt,bf,P.activity); P.tdee=td.tdee;
+  document.getElementById('comp-out').style.display='block';
+  document.getElementById('bf-num').textContent=bf+'%';
+  document.getElementById('bf-num').style.color=cat.col;
+  document.getElementById('bf-tag-wrap').innerHTML='<span class="gpill '+cat.cls+'">'+cat.label+'</span>';
+  var lp=Math.round(P.lbm/wt*100);
+  document.getElementById('comp-bar').innerHTML='<div class="comp-seg" style="width:'+lp+'%;background:#4FC3F7"></div><div class="comp-seg" style="width:'+(100-lp)+'%;background:#CE93D8"></div>';
+  document.getElementById('comp-leg').innerHTML='<div class="cli"><div class="cdot" style="background:#4FC3F7"></div>Lean '+P.lbm.toFixed(1)+' kg ('+lp+'%)</div><div class="cli"><div class="cdot" style="background:#CE93D8"></div>Fat '+P.fm.toFixed(1)+' kg ('+(100-lp)+'%)</div>';
+  var rb=document.getElementById('rec-box');
+  var msgs={cut:'<div class="rec-title">Recommendation: Cut</div><div class="rec-body">At '+bf+'% a cut will maximise your results before building muscle. TDEE ≈ <strong>'+P.tdee+' kcal/day</strong>.</div>',
+    bulk:'<div class="rec-title">You\'re lean — consider bulking</div><div class="rec-body">At '+bf+'% you\'re already lean. A controlled surplus would build muscle well. TDEE ≈ <strong>'+P.tdee+' kcal/day</strong>.</div>',
+    recomp:'<div class="rec-title">Recomp zone</div><div class="rec-body">At '+bf+'% you can cut or bulk effectively. A mild cut is most popular here. TDEE ≈ <strong>'+P.tdee+' kcal/day</strong>.</div>'};
+  rb.className='rec-box '+cat.rec; rb.innerHTML=msgs[cat.rec];
+  document.getElementById('s2-next').disabled=false;
+}
+
+function goStep3() {
+  goStep(3);
+  var goals=goalOpts(P.sex,P.bf);
+  document.getElementById('s3-sub').textContent='Currently '+P.bf+'% BF at '+P.weight+' kg. Select your target.';
+  var html='';
+  goals.forEach(function(g,i){
+    var tw=targetWt(P.lbm,g.pct); var tl=P.weight-tw; var wks=Math.ceil(tl/0.5);
+    html+='<div class="gc" id="gc'+i+'" onclick="selGoal('+i+')">'
+      +'<div class="gc-radio"><div class="gc-dot"></div></div>'
+      +'<div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><span style="font-family:\'Barlow Condensed\',sans-serif;font-size:19px;font-weight:700">'+g.pct+'%</span><span style="font-size:14px;font-weight:500">'+g.name+'</span><span class="gpill '+g.pill+'">'+g.pt+'</span></div>'
+      +'<div style="font-size:12px;color:var(--text3)">'+g.desc+'</div>'
+      +'<div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace;margin-top:6px">Lose '+tl.toFixed(1)+' kg · Target '+tw.toFixed(1)+' kg · ~'+wks+' weeks</div>'
+      +'</div></div>';
+  });
+  if(!html) html='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">You\'re already very lean — consider a bulk phase.</div>';
+  document.getElementById('goal-grid').innerHTML=html;
+  selectedGoal=null; document.getElementById('s3-next').disabled=true;
+}
+
+function selGoal(i) {
+  document.querySelectorAll('.gc').forEach(function(c){c.classList.remove('sel');});
+  document.getElementById('gc'+i).classList.add('sel');
+  var goals=goalOpts(P.sex,P.bf); selectedGoal=goals[i];
+  document.getElementById('s3-next').disabled=false;
+}
+
+function goStep4(){
+  if(!selectedGoal)return;
+  goStep(4); buildPlan();
+}
+
+function buildPlan(){
+  var g=selectedGoal;
+  var tw=targetWt(P.lbm,g.pct); var tl=P.weight-tw; var wks=Math.ceil(tl/0.5);
+  var protein=Math.round(P.weight*2.4); var pCal=protein*4;
+  function mkPh(def,wk){
+    var cal=Math.round(P.tdee*(1-def/100));
+    var rem=cal-pCal;
+    var fats=Math.max(Math.round(P.weight*0.4),Math.round(rem*0.22/9));
+    var carbs=Math.max(50,Math.round((rem-fats*9)/4));
+    return{cal:cal,protein:protein,carbs:carbs,fats:fats,def:def,wks:wk};
+  }
+  var phases=[];
+  if(wks<=4) phases=[mkPh(20,wks)];
+  else if(wks<=12) phases=[mkPh(20,4),mkPh(25,wks-4)];
+  else phases=[mkPh(20,4),mkPh(25,Math.min(8,wks-4)),mkPh(30,Math.max(1,wks-12))];
+  plan={tw:tw,tl:tl,wks:wks,tdee:P.tdee,protein:protein,phases:phases,goal:g};
+
+  var html='<div class="card-title">Your plan</div>'
+    +'<div class="card-sub">Target: <strong style="color:var(--text)">'+g.pct+'% BF at '+tw.toFixed(1)+' kg</strong></div>'
+    +'<div class="plan-hero">'
+    +'<div class="ps2"><div class="psv g">'+tl.toFixed(1)+' kg</div><div class="psl">To lose</div></div>'
+    +'<div class="ps2"><div class="psv a">'+wks+' wks</div><div class="psl">Duration</div></div>'
+    +'<div class="ps2"><div class="psv b">'+P.tdee+'</div><div class="psl">TDEE kcal</div></div>'
+    +'<div class="ps2"><div class="psv p">'+protein+'g</div><div class="psl">Protein/day</div></div>'
+    +'<div class="ps2"><div class="psv">'+tw.toFixed(1)+' kg</div><div class="psl">Target wt</div></div>'
+    +'<div class="ps2"><div class="psv">'+g.pct+'%</div><div class="psl">Target BF</div></div>'
+    +'</div>'
+    +'<div class="insight"><strong>0.5 kg/week</strong> is the evidence-based sweet spot — fast enough to see progress, slow enough to protect your '+P.lbm.toFixed(1)+' kg of lean mass.</div>'
+    +'<div style="background:var(--bg2);border-radius:var(--rl);border:1px solid var(--border);overflow:hidden;margin-bottom:14px">'
+    +'<table class="ptable"><thead><tr><th>Phase</th><th>Weeks</th><th>Deficit</th><th>Daily macros</th></tr></thead><tbody>';
+  var ws=1;
+  phases.forEach(function(ph,i){
+    var we=ws+ph.wks-1;
+    html+='<tr><td style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:600;color:var(--text3)">Phase '+(i+1)+'</td>'
+      +'<td style="font-size:12px;color:var(--text2);font-family:\'DM Mono\',monospace">'+(ph.wks===1?'Wk '+ws:'Wks '+ws+'–'+we)+'</td>'
+      +'<td><span style="font-size:12px;font-family:\'DM Mono\',monospace;color:var(--red)">-'+ph.def+'%</span></td>'
+      +'<td><div class="mc-row"><span class="mc mc-c">'+ph.cal+' kcal</span><span class="mc mc-p">P '+ph.protein+'g</span><span class="mc mc-cb">C '+ph.carbs+'g</span><span class="mc mc-f">F '+ph.fats+'g</span></div></td>'
+      +'</tr>';
+    ws=we+1;
+  });
+  html+='</tbody></table></div>'
+    +'<div class="insight"><strong>After the cut:</strong> Reverse diet for 4–6 weeks (add ~50 kcal/week), then controlled surplus. Protein stays at '+protein+'g throughout.</div>';
+  document.getElementById('plan-card').innerHTML=html;
+}
+
+async function applyPlan(){
+  if(!plan||!USER) return;
+  document.getElementById('apply-btn').disabled=true;
+  document.getElementById('apply-btn').textContent='Saving…';
+  var ph1=plan.phases[0];
+  // Save profile
+  await sb.from('profiles').upsert({
+    id: USER.id, age:P.age, height_cm:P.height, sex:P.sex, activity:P.activity,
+    start_weight:P.weight, goal_weight:parseFloat(plan.tw.toFixed(1)),
+    bf_pct:P.bf, setup_complete:true
+  });
+  // Save targets
+  await sb.from('targets').upsert({
+    user_id:USER.id, calories:ph1.cal, protein:ph1.protein,
+    carbs:ph1.carbs, fats:ph1.fats, steps:9000,
+    weight_goal:parseFloat(plan.tw.toFixed(1))
+  });
+  window.location.href='app.html';
+}
+</script>
+</body>
+</html>
