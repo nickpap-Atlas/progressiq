@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Progress IQ - Body · Nutrition · Training · Health</title>
+<meta name="description" content="The fitness tracker that actually knows your program. Blood test parsing, trainer connection, body composition tracking — all in one place."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07090A;--bg1:#0E1214;--bg2:#161C1F;--bg3:#1E2529;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);--text:#D6E4E0;--text2:#7A9490;--text3:#4A6460;--accent:#00E676;--adim:rgba(0,230,118,.1);--amid:rgba(0,230,118,.25);--red:#FF5252;--amber:#FFB74D;--blue:#4FC3F7;--purple:#CE93D8;}
+html,body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}::selection{background:var(--accent);color:#000}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,9,10,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:700;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-link{font-size:14px;color:var(--text3);transition:color .14s}.nav-link:hover{color:var(--text)}
+.nav-cta{background:var(--accent);color:#000;padding:7px 18px;border-radius:8px;font-size:14px;font-weight:500;transition:all .14s}.nav-cta:hover{background:#33EE8B}
+.s{padding:100px 40px}.inner{max-width:1080px;margin:0 auto}
+.eyebrow{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.h1{font-family:"Barlow Condensed",sans-serif;font-size:clamp(56px,8vw,100px);font-weight:900;letter-spacing:-.01em;text-transform:uppercase;line-height:.93;margin-bottom:22px}
+.h2{font-family:"Barlow Condensed",sans-serif;font-size:clamp(34px,4vw,52px);font-weight:700;letter-spacing:.02em;text-transform:uppercase;line-height:1.05;margin-bottom:12px}
+.lead{font-size:18px;color:var(--text2);max-width:560px;line-height:1.65}
+.sub{font-size:15px;color:var(--text2);max-width:520px;line-height:1.65;margin-bottom:44px}
+.accent{color:var(--accent)}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;transition:all .15s;border:none;font-family:"DM Sans",sans-serif}
+.btn-p{background:var(--accent);color:#000}.btn-p:hover{background:#33EE8B;transform:translateY(-2px)}
+.btn-g{background:var(--bg2);color:var(--text);border:1px solid var(--border2)}.btn-g:hover{background:var(--bg3);transform:translateY(-2px)}
+/* Hero */
+.hero{padding:140px 40px 60px}.hero-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.mockup{background:var(--bg1);border:1px solid var(--border2);border-radius:20px;overflow:hidden;box-shadow:0 32px 80px rgba(0,230,118,.06)}
+.mock-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%}
+.mb{padding:16px}
+.mt{font-family:"Barlow Condensed",sans-serif;font-size:18px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}
+.mc{background:var(--bg2);border-radius:8px;border:1px solid var(--border);padding:10px}
+.mv{font-family:"Barlow Condensed",sans-serif;font-size:22px;font-weight:700;line-height:1}
+.ml{font-size:9px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+.mbb{height:3px;background:var(--bg3);border-radius:2px;margin-top:5px}
+.mbf{height:100%;border-radius:2px}
+.mr{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:13px}
+.pill{font-size:10px;padding:2px 7px;border-radius:8px}
+.pg{background:rgba(0,230,118,.1);color:var(--accent)}.pr{background:rgba(255,82,82,.1);color:var(--red)}.pa{background:rgba(255,183,77,.1);color:var(--amber)}
+/* Stats */
+.stats-bar{background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 40px}
+.stats-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.sv{font-family:"Barlow Condensed",sans-serif;font-size:44px;font-weight:700;color:var(--accent);line-height:1}
+.sl{font-size:12px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+/* Features */
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fc{background:var(--bg1);border:1px solid var(--border);border-radius:16px;padding:26px;transition:border-color .15s,transform .15s}
+.fc:hover{border-color:var(--border2);transform:translateY(-3px)}
+.fi{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px}
+.fi-g{background:rgba(0,230,118,.1)}.fi-b{background:rgba(79,195,247,.1)}.fi-a{background:rgba(255,183,77,.1)}.fi-r{background:rgba(255,82,82,.1)}.fi-p{background:rgba(206,147,216,.1)}
+.ft{font-family:"Barlow Condensed",sans-serif;font-size:19px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-bottom:8px}
+.fd{font-size:14px;color:var(--text2);line-height:1.65}
+/* Split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+/* Pricing */
+.pg2{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:720px}
+.pc{background:var(--bg1);border:1px solid var(--border);border-radius:20px;padding:28px;position:relative}
+.pc.feat{border-color:var(--accent);background:linear-gradient(135deg,rgba(0,230,118,.06),var(--bg1))}
+.pbadge{position:absolute;top:-1px;right:24px;background:var(--accent);color:#000;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:0 0 8px 8px}
+.pn{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+.pa2{font-family:"Barlow Condensed",sans-serif;font-size:48px;font-weight:700;line-height:1;color:var(--accent);margin-bottom:4px}
+.pa2 span{font-size:16px;color:var(--text3);font-weight:400}
+.pd{font-size:13px;color:var(--text3);margin-bottom:20px;line-height:1.5}
+.pf{list-style:none;margin-bottom:24px}
+.pf li{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.4}
+.pf li::before{content:"✓";color:var(--accent);font-weight:700;flex-shrink:0;margin-top:1px}
+.pf li.no{color:var(--text3)}.pf li.no::before{content:"–";color:var(--text3)}
+.pbtn{display:block;text-align:center;padding:12px;border-radius:10px;font-size:14px;font-weight:500;transition:all .14s;cursor:pointer}
+.pbtn-f{background:var(--bg2);color:var(--text);border:1px solid var(--border2)}.pbtn-f:hover{background:var(--bg3)}
+.pbtn-p{background:var(--accent);color:#000}.pbtn-p:hover{background:#33EE8B}
+/* FAQ */
+.faq-i{border-bottom:1px solid var(--border);padding:18px 0}
+.faq-q{font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none}
+.faq-q:hover{color:var(--accent)}
+.faq-a{font-size:14px;color:var(--text2);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
+.faq-i.open .faq-a{max-height:300px;padding-top:12px}
+.faq-ch{transition:transform .3s;flex-shrink:0;color:var(--text3)}
+.faq-i.open .faq-ch{transform:rotate(180deg)}
+/* Disclaimer */
+.disc{background:rgba(255,183,77,.06);border-top:1px solid rgba(255,183,77,.15);border-bottom:1px solid rgba(255,183,77,.15);padding:20px 40px}
+.disc-inner{max-width:1080px;margin:0 auto;font-size:13px;color:#5A6A50;line-height:1.6}
+footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.fl{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:700;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.fn{font-size:12px;color:var(--text3)}
+@media(max-width:860px){
+  nav{padding:0 16px}.hero,.s{padding-left:16px;padding-right:16px}.hero{padding-top:90px}
+  .hero-inner,.split{grid-template-columns:1fr}.mockup{display:none}
+  .fg{grid-template-columns:1fr}.stats-inner{grid-template-columns:repeat(2,1fr)}
+  .pg2{grid-template-columns:1fr;max-width:100%}.nav-links .nav-link{display:none}
+  footer{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Progress IQ</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#features">Features</a>
+    <a class="nav-link" href="#trainer">Trainer</a>
+    <a class="nav-link" href="#pricing">Pricing</a>
+    <a href="index.html" style="font-size:14px;color:var(--text2)">Sign in</a>
+    <a class="nav-cta" href="index.html">Start free</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Body &middot; Nutrition &middot; Training &middot; Health</div>
+      <h1 class="h1">Track it.<br><span class="accent">Build it.</span><br>Own it.</h1>
+      <p class="lead">The only fitness tracker that knows your exact program, reads your blood test PDFs, and connects directly to your trainer &mdash; all without an app store.</p>
+      <div class="actions">
+        <a class="btn btn-p" href="index.html">Create free account</a>
+        <a class="btn btn-g" href="index.html">&#9654; Try demo</a>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:12px">No app install &middot; Works on any device &middot; Your data stays yours</div>
+    </div>
+    <div class="mockup">
+      <div class="mock-bar">
+        <div class="dot" style="background:#FF5F56"></div><div class="dot" style="background:#FFBD2E"></div><div class="dot" style="background:#27C93F"></div>
+        <span style="margin-left:8px;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">progressiq.netlify.app</span>
+      </div>
+      <div class="mb">
+        <div class="mt">Today</div>
+        <div class="mg">
+          <div class="mc"><div class="mv" style="color:var(--purple)">74.9</div><div class="ml">Weight kg</div><div class="mbb"><div class="mbf" style="width:82%;background:#CE93D8"></div></div></div>
+          <div class="mc"><div class="mv" style="color:var(--accent)">1,813</div><div class="ml">Calories</div><div class="mbb"><div class="mbf" style="width:94%;background:#00E676"></div></div></div>
+          <div class="mc"><div class="mv" style="color:var(--blue)">189g</div><div class="ml">Protein</div><div class="mbb"><div class="mbf" style="width:100%;background:#4FC3F7"></div></div></div>
+          <div class="mc"><div class="mv" style="color:var(--amber)">176g</div><div class="ml">Carbs</div><div class="mbb"><div class="mbf" style="width:88%;background:#FFB74D"></div></div></div>
+          <div class="mc"><div class="mv" style="color:#F48FB1">41g</div><div class="ml">Fats</div><div class="mbb"><div class="mbf" style="width:90%;background:#F48FB1"></div></div></div>
+          <div class="mc"><div class="mv" style="color:var(--accent)">11.2k</div><div class="ml">Steps</div><div class="mbb"><div class="mbf" style="width:100%;background:#00E676"></div></div></div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px">Latest blood results</div>
+        <div class="mr"><span>Testosterone</span><span style="color:var(--accent)">20.1 nmol/L <span class="pill pg">&#10003;</span></span></div>
+        <div class="mr"><span>LDL Cholesterol</span><span style="color:var(--amber)">3.5 mmol/L <span class="pill pa">monitor</span></span></div>
+        <div class="mr"><span>Vitamin D</span><span style="color:var(--accent)">91 nmol/L <span class="pill pg">&#10003;</span></span></div>
+        <div style="margin-top:10px;padding:10px 12px;background:rgba(79,195,247,.07);border:1px solid rgba(79,195,247,.2);border-radius:8px;font-size:12px;color:var(--blue)">&#127916; Trainer update &mdash; Week 3 &middot; Watch Loom</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div><div class="sv">161</div><div class="sl">Days tracked</div></div>
+    <div><div class="sv">10 kg</div><div class="sl">Lost first cut</div></div>
+    <div><div class="sv">19%</div><div class="sl">Body fat at peak</div></div>
+    <div><div class="sv">5</div><div class="sl">Training days / wk</div></div>
+  </div>
+</div>
+
+<section class="s" id="features">
+  <div class="inner">
+    <div class="eyebrow">What it does</div>
+    <h2 class="h2">Everything serious<br>trackers actually need.</h2>
+    <p class="sub">Built from a real 6-month cut. Every feature earned its place.</p>
+    <div class="fg">
+      <div class="fc"><div class="fi fi-g">&#129514;</div><div class="ft">Smart targets</div><div class="fd">Calculates your TDEE from actual body composition. Sets a 3-phase progressive deficit with protein locked throughout to protect lean mass.</div></div>
+      <div class="fc"><div class="fi fi-a">&#128202;</div><div class="ft">Weekly review</div><div class="fd">Rate of loss, calorie and protein compliance, training sessions &mdash; per week. Auto-suggests a calorie adjustment if you&apos;re losing too fast or too slow.</div></div>
+      <div class="fc"><div class="fi fi-b">&#127947;</div><div class="ft">Program-aware training</div><div class="fd">Your exact program is loaded. Every exercise shows last session&apos;s numbers side by side. Rest timer, ATH tracking, progressive overload &mdash; all automatic.</div></div>
+      <div class="fc"><div class="fi fi-r">&#129754;</div><div class="ft">Blood test parsing</div><div class="fd">Upload your pathology PDF and every biomarker is extracted automatically. Red/amber/green flags, trend tracking, DEXA scan integration.</div></div>
+      <div class="fc"><div class="fi fi-g">&#128248;</div><div class="ft">Progress photos</div><div class="fd">Weekly check-in photos stored privately. Front, side, back. Organised by week and visible to your trainer.</div></div>
+      <div class="fc"><div class="fi fi-p">&#128508;</div><div class="ft">Full roadmap</div><div class="fd">Not just a log &mdash; a forward-looking plan. Week-by-week targets from deficit through reverse diet to surplus, with projected weights.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="trainer" style="background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="inner">
+    <div class="split">
+      <div>
+        <div class="eyebrow">For coaches</div>
+        <h2 class="h2">Invite your trainer.<br><span class="accent">No login needed.</span></h2>
+        <p class="sub" style="margin-bottom:24px">Generate a private link from Settings. Your trainer gets a full read-only view of your weekly data, progress photos, and training log &mdash; and can post Loom videos and messages directly into your weekly tab.</p>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--text2)"><span style="color:var(--accent);font-weight:700;flex-shrink:0">01</span>Enter trainer email in Settings &rarr; Generate link</div>
+          <div style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--text2)"><span style="color:var(--accent);font-weight:700;flex-shrink:0">02</span>Trainer opens link &mdash; sees your data read-only, no account required</div>
+          <div style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--text2)"><span style="color:var(--accent);font-weight:700;flex-shrink:0">03</span>Trainer posts a Loom video or message &mdash; appears as a card in your Weekly tab</div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;letter-spacing:.04em;text-transform:uppercase">Trainer View</span>
+          <span style="font-size:11px;padding:3px 10px;border-radius:10px;background:rgba(79,195,247,.1);color:var(--blue);border:1px solid rgba(79,195,247,.2)">Read-only</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+          <div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:var(--accent)">74.9</div><div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">Current kg</div></div>
+          <div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:var(--accent)">3.1</div><div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">kg lost</div></div>
+          <div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:var(--blue)">4</div><div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">Sessions</div></div>
+        </div>
+        <div style="background:var(--bg3);border-radius:8px;border:1px solid var(--border);padding:12px">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">Post this week</div>
+          <div style="background:var(--bg2);border-radius:6px;border:1px solid var(--border);padding:8px;font-size:12px;color:var(--text3);margin-bottom:6px">Loom video URL&hellip;</div>
+          <div style="background:var(--bg2);border-radius:6px;border:1px solid var(--border);padding:8px;font-size:12px;color:var(--text3);margin-bottom:8px;min-height:44px">Message to client&hellip;</div>
+          <div style="background:var(--accent);color:#000;border-radius:6px;padding:7px;text-align:center;font-size:12px;font-weight:500">Post update</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="pricing">
+  <div class="inner" style="text-align:center;margin-bottom:48px">
+    <div class="eyebrow">Pricing</div>
+    <h2 class="h2">Simple. <span class="accent">No surprises.</span></h2>
+    <p style="font-size:15px;color:var(--text2)">Start free. Upgrade when you want the full picture.</p>
+  </div>
+  <div class="inner"><div class="pg2" style="margin:0 auto">
+    <div class="pc">
+      <div class="pn">Free</div>
+      <div class="pa2">$0<span>/month</span></div>
+      <div class="pd">Everything you need to start tracking properly.</div>
+      <ul class="pf">
+        <li>Daily nutrition logging</li><li>Program-aware training log</li><li>Body fat tracking</li>
+        <li>Weekly review with rate of loss</li><li>Full roadmap (deficit &rarr; surplus)</li>
+        <li>Trends and history</li><li>Apple Health import</li>
+        <li class="no">Progress photos</li><li class="no">Trainer connection</li>
+        <li class="no">Blood test PDF parsing</li><li class="no">AI coaching</li>
+      </ul>
+      <a class="pbtn pbtn-f" href="index.html">Get started free</a>
+    </div>
+    <div class="pc feat">
+      <div class="pbadge">Most popular</div>
+      <div class="pn">Pro</div>
+      <div class="pa2">$19<span>/month</span></div>
+      <div class="pd">For people who are serious about their results.</div>
+      <ul class="pf">
+        <li>Everything in Free</li>
+        <li>Progress photos &mdash; front, side, back, weekly</li>
+        <li>Trainer connection &mdash; Loom videos &amp; messages</li>
+        <li>Blood test PDF parsing (Laverty, Sullivan Nicolaides)</li>
+        <li>DEXA scan tracking</li>
+        <li>AI coaching &mdash; data-driven personalised advice</li>
+        <li>Priority support</li>
+      </ul>
+      <a class="pbtn pbtn-p" href="index.html">Start free, upgrade anytime</a>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text3)">No card required to start &middot; Cancel anytime &middot; Prices in AUD</div>
+  </div>
+</section>
+
+<div class="disc">
+  <div class="disc-inner">
+    <strong style="color:var(--amber)">Important:</strong> Progress IQ is a personal tracking tool, not a medical or professional fitness service. The calculations, nutrition targets, and coaching suggestions are based on publicly available formulas and your personal data &mdash; they are a starting point, not a prescription. I am not a doctor, dietitian, or certified personal trainer. Always consult a qualified health professional before changing your diet, training programme, or health management, particularly if you have an existing medical condition.
+  </div>
+</div>
+
+<section class="s" style="background:var(--bg1);border-top:1px solid var(--border)">
+  <div class="inner" style="max-width:700px">
+    <div class="eyebrow">FAQ</div>
+    <h2 class="h2" style="margin-bottom:32px">Common questions.</h2>
+    <div class="faq-i open"><div class="faq-q" onclick="toggleFAQ(this)">Is this an app I need to download? <svg class="faq-ch" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg></div><div class="faq-a">No. It runs in your browser &mdash; on your phone, tablet, or laptop. No app store, no install. Just bookmark it.</div></div>
+    <div class="faq-i"><div class="faq-q" onclick="toggleFAQ(this)">Where is my data stored? <svg class="faq-ch" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg></div><div class="faq-a">All data is stored in a secure Supabase database with row-level security. Only you can see your data.</div></div>
+    <div class="faq-i"><div class="faq-q" onclick="toggleFAQ(this)">Does my trainer need an account? <svg class="faq-ch" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg></div><div class="faq-a">No. You generate a private link in Settings and share it. They open the link and get a read-only view &mdash; no login required.</div></div>
+    <div class="faq-i"><div class="faq-q" onclick="toggleFAQ(this)">Which blood test labs does it support? <svg class="faq-ch" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg></div><div class="faq-a">Currently optimised for Laverty Pathology and MeasureUp DXA scans. Manual entry works for any lab. More formats coming.</div></div>
+    <div class="faq-i"><div class="faq-q" onclick="toggleFAQ(this)">Is this medical advice? <svg class="faq-ch" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg></div><div class="faq-a">No. Progress IQ is a personal tracking tool. Always consult a qualified professional before changing your diet or training.</div></div>
+  </div>
+</section>
+
+<section class="s" style="background:var(--bg1);border-top:1px solid var(--border);text-align:center">
+  <div class="inner" style="max-width:580px">
+    <h2 class="h2">Ready to actually<br><span class="accent">track properly?</span></h2>
+    <p style="font-size:16px;color:var(--text2);margin-bottom:32px;line-height:1.6">Free to start. No credit card. Your data is yours &mdash; always.</p>
+    <div class="actions" style="justify-content:center">
+      <a class="btn btn-p" href="index.html">Create free account</a>
+      <a class="btn btn-g" href="index.html">&#9654; Try demo first</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">Progress IQ</div>
+  <div style="display:flex;gap:20px;font-size:13px;color:var(--text3)"><a href="index.html">Sign in</a><a href="#pricing">Pricing</a><a href="index.html">Sign up</a></div>
+  <div class="fn">Not medical advice &middot; Always consult a professional</div>
+</footer>
+
+<script>
+function toggleFAQ(el){el.closest('.faq-i').classList.toggle('open');}
+</script>
+</body>
+</html>
