@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Progress IQ — Trainer View</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07090A;--bg1:#0E1214;--bg2:#161C1F;--bg3:#1E2529;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);--text:#D6E4E0;--text2:#7A9490;--text3:#4A6460;--accent:#00E676;--adim:rgba(0,230,118,.11);--amid:rgba(0,230,118,.3);--red:#FF5252;--amber:#FFB74D;--blue:#4FC3F7;--r:10px;--rl:16px;}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6}
+::selection{background:var(--accent);color:#000}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:4px}
+.topbar{background:var(--bg1);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+.topbar-badge{font-size:11px;padding:3px 10px;border-radius:12px;background:rgba(79,195,247,.1);color:var(--blue);border:1px solid rgba(79,195,247,.2);letter-spacing:.04em}
+.topbar-client{font-size:13px;color:var(--text3)}
+.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;margin-top:28px}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:12px}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.card-meta{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat-box{background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);padding:14px;text-align:center}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;line-height:1;color:var(--accent)}
+.stat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-weight:500}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);font-family:'DM Mono',monospace}
+.tbl tr:last-child td{border-bottom:none}
+.rol-pos{color:var(--red)}.rol-neg{color:var(--accent)}
+.field label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:5px}
+.field{margin-bottom:12px}
+.field input,.field textarea,.field select{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .14s;width:100%}
+.field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--adim)}
+.field textarea{resize:vertical;line-height:1.5;min-height:80px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;transition:all .14s;border:none;font-family:'DM Sans',sans-serif}
+.btn-p{background:var(--accent);color:#000}.btn-p:hover{background:#33EE8B}
+.btn-p:disabled{opacity:.45;cursor:not-allowed}
+.loom-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:10px}
+.loom-week{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px}
+.loom-msg{font-size:14px;color:var(--text);line-height:1.5;margin-bottom:10px}
+.loom-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--blue);text-decoration:none;font-weight:500}
+.loom-link:hover{text-decoration:underline}
+.loom-embed{width:100%;border-radius:var(--r);border:none;margin-top:10px;display:block}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.photo-thumb{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);aspect-ratio:3/4;overflow:hidden;position:relative}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-angle{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.6);border-radius:4px;padding:2px 7px;font-size:10px;color:var(--text2);letter-spacing:.05em;text-transform:uppercase}
+.loading{text-align:center;padding:80px;color:var(--text3);font-size:14px}
+.error-box{background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.2);border-radius:var(--rl);padding:24px;text-align:center;color:var(--red);font-size:14px}
+.flash{font-size:12px;color:var(--accent);opacity:0;transition:opacity .3s;margin-left:8px}.flash.show{opacity:1}
+.disclaimer{background:rgba(255,183,77,.06);border:1px solid rgba(255,183,77,.2);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--amber);line-height:1.5;margin-bottom:20px}
+.weekly-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.stat-grid{grid-template-columns:repeat(2,1fr)}.weekly-grid{grid-template-columns:1fr}.photo-grid{grid-template-columns:repeat(2,1fr)}.wrap{padding:16px 12px 80px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">Progress IQ</div>
+  <div id="topbar-client" class="topbar-client">Loading…</div>
+  <div class="topbar-badge">Trainer View</div>
+</div>
+
+<div class="wrap">
+  <div id="main-content"><div class="loading">Loading client data…</div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SUPA_URL = 'https://ihguwzmglzlgzaodwrrp.supabase.co';
+var SUPA_KEY = 'sb_publishable_eQMlmxbWZnyTeb7APkODXQ_hZxIjuv_';
+var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+var TOKEN = new URLSearchParams(window.location.search).get('token');
+var DATA = null;
+
+function fmtDate(dk) { var p=dk.split('-'); return p[2]+'/'+p[1]+'/'+p[0].slice(2); }
+function numAvg(arr) { var v=arr.filter(function(x){return x!=null&&!isNaN(x);}); return v.length?v.reduce(function(a,b){return a+b;})/v.length:null; }
+function mondayOf(d) { var dt=new Date(d); var off=((dt.getDay()+6)%7); dt.setDate(dt.getDate()-off); return dt.toISOString().split('T')[0]; }
+
+async function load() {
+  if (!TOKEN) { showError('No trainer token in URL. Ask your client to re-share the link.'); return; }
+  var r = await sb.rpc('get_client_data_for_trainer', { p_token: TOKEN });
+  if (r.error) { showError('Error: ' + r.error.message); return; }
+  var d = r.data;
+  if (d && d.error) { showError('Invalid or expired trainer link. Ask your client to generate a new one in Settings.'); return; }
+  DATA = d;
+  render(d);
+}
+
+function showError(msg) {
+  document.getElementById('main-content').innerHTML = '<div class="error-box">'+msg+'</div>';
+}
+
+function render(d) {
+  var profile = d.profile || {};
+  var entries = d.entries || [];
+  var sessions = d.sessions || [];
+  var bf = d.bf_readings || [];
+  var photos = d.photos || [];
+  var posts = d.posts || [];
+
+  document.getElementById('topbar-client').textContent = (profile.name || 'Client');
+
+  // Stats
+  var wts = entries.map(function(e){return e.weight;}).filter(Boolean);
+  var cals = entries.slice(0,7).map(function(e){return e.calories;}).filter(Boolean);
+  var avgCal = cals.length ? Math.round(numAvg(cals)) : '—';
+  var curWt = wts.length ? wts[0].toFixed(1) : '—';
+  var startWt = profile.start_weight || '—';
+  var lost = (startWt !== '—' && curWt !== '—') ? (parseFloat(startWt)-parseFloat(curWt)).toFixed(1) : '—';
+  var latestBF = bf.length ? bf[bf.length-1].bf_pct+'%' : '—';
+
+  var html = '<div class="disclaimer">⚠ Trainer view is read-only. Data is provided by the client for coaching purposes only.</div>';
+
+  html += '<div class="stat-grid">';
+  html += statBox(curWt+' kg', 'Current weight');
+  html += statBox(lost !== '—' ? lost+' kg' : '—', 'Total lost');
+  html += statBox(avgCal, 'Avg cal / day');
+  html += statBox(sessions.length, 'Sessions logged');
+  html += '</div>';
+
+  // Weekly summary table
+  html += '<div class="section-title">Weekly review</div>';
+  html += buildWeeklyTable(entries, sessions, posts);
+
+  // Post a note section
+  html += '<div class="section-title">Post this week\'s update</div>';
+  html += '<div class="card">';
+  html += '<div class="field"><label>Your name / email</label><input type="text" id="t-name" placeholder="Coach Sarah · sarah@gym.com"/></div>';
+  html += '<div class="field"><label>Week of</label><input type="date" id="t-week" value="'+mondayOf(new Date().toISOString().split('T')[0])+'"/></div>';
+  html += '<div class="field"><label>Loom video URL (optional)</label><input type="url" id="t-loom" placeholder="https://www.loom.com/share/..."/></div>';
+  html += '<div class="field"><label>Message to client</label><textarea id="t-msg" placeholder="Great week — your protein compliance was solid. Focus on…"></textarea></div>';
+  html += '<div style="display:flex;align-items:center;gap:8px"><button class="btn btn-p" onclick="postNote()">Post update</button><span class="flash" id="post-flash">Posted ✓</span></div>';
+  html += '</div>';
+
+  // Progress photos
+  if (photos.length) {
+    html += '<div class="section-title">Progress photos</div>';
+    html += buildPhotoGrid(photos, d);
+  }
+
+  // Body composition
+  if (bf.length) {
+    html += '<div class="section-title">Body composition</div>';
+    html += '<div class="card"><table class="tbl"><thead><tr><th>Date</th><th>BF%</th><th>Weight</th><th>LBM</th><th>FM</th></tr></thead><tbody>';
+    bf.slice().reverse().forEach(function(r){
+      html += '<tr><td>'+fmtDate(r.date)+'</td><td>'+r.bf_pct+'%</td><td>'+(r.weight||'—')+'</td><td>'+(r.lbm||'—')+'</td><td>'+(r.fm||'—')+'</td></tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  document.getElementById('main-content').innerHTML = html;
+}
+
+function statBox(val, lbl) {
+  return '<div class="stat-box"><div class="stat-val">'+val+'</div><div class="stat-lbl">'+lbl+'</div></div>';
+}
+
+function buildWeeklyTable(entries, sessions, posts) {
+  var wmap = {};
+  entries.forEach(function(e){
+    var wk = mondayOf(e.date);
+    if(!wmap[wk]) wmap[wk]={days:[]};
+    wmap[wk].days.push(e);
+  });
+  var wkeys = Object.keys(wmap).sort().reverse().slice(0,12);
+  var postByWeek = {};
+  posts.forEach(function(p){ postByWeek[mondayOf(p.week_of)] = p; });
+
+  var html = '<div class="card" style="padding:0;overflow:auto">';
+  html += '<table class="tbl"><thead><tr><th>Week</th><th>Avg BW</th><th>ROL</th><th>Avg Cal</th><th>Avg Pro</th><th>Sessions</th><th>Coach note</th></tr></thead><tbody>';
+
+  var prevBW = null;
+  wkeys.slice().reverse().forEach(function(wk, i){
+    var d = wmap[wk].days;
+    var bwv = d.map(function(x){return x.weight;}).filter(Boolean);
+    var avgBW = bwv.length ? numAvg(bwv) : null;
+    var rol = (avgBW&&prevBW) ? avgBW-prevBW : null;
+    var calA = numAvg(d.map(function(x){return x.calories;}).filter(Boolean));
+    var protA = numAvg(d.map(function(x){return x.protein;}).filter(Boolean));
+    var wkDate = new Date(wk);
+    var sess = sessions.filter(function(s){var sd=new Date(s.date);return sd>=wkDate&&sd<new Date(wkDate.getTime()+7*86400000);}).length;
+    var post = postByWeek[wk];
+    var rolH = rol!=null ? '<span class="'+(rol<-0.05?'rol-neg':'rol-pos')+'">'+(rol<0?'':'+')+''+rol.toFixed(2)+'</span>' : '—';
+    var noteH = post ? (post.loom_url ? '<a class="loom-link" href="'+post.loom_url+'" target="_blank">▶ Watch</a>' : '') + (post.message ? ' <span style="color:var(--text2);font-family:\'DM Sans\',sans-serif;font-size:12px">'+post.message.slice(0,40)+(post.message.length>40?'…':'')+'</span>' : '') : '<span style="color:var(--text3)">—</span>';
+    html += '<tr><td>'+fmtDate(wk)+'</td><td>'+(avgBW?avgBW.toFixed(2):'—')+'</td><td>'+rolH+'</td><td>'+(calA?Math.round(calA).toLocaleString():'—')+'</td><td>'+(protA?Math.round(protA)+'g':'—')+'</td><td>'+sess+'</td><td>'+noteH+'</td></tr>';
+    prevBW = avgBW;
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function buildPhotoGrid(photos, fullData) {
+  // Group by week
+  var byWeek = {};
+  photos.forEach(function(p){ if(!byWeek[p.week_of]) byWeek[p.week_of]=[]; byWeek[p.week_of].push(p); });
+  var weeks = Object.keys(byWeek).sort().reverse();
+  var html = '';
+  weeks.forEach(function(wk){
+    html += '<div class="card"><div class="card-hdr"><span class="card-title">Week of '+fmtDate(wk)+'</span></div>';
+    html += '<div class="photo-grid">';
+    byWeek[wk].forEach(function(ph){
+      // Fetch full photo data for display
+      html += '<div class="photo-thumb" id="photo-'+ph.id+'"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text3);font-size:11px">Loading…</div><div class="photo-angle">'+ph.angle+'</div></div>';
+    });
+    html += '</div></div>';
+  });
+  // Load full photo data
+  setTimeout(function(){ loadPhotos(photos, fullData); }, 100);
+  return html;
+}
+
+async function loadPhotos(photos, fullData) {
+  // Photos don't include data in the summary — need separate fetch
+  // For now show angle labels only (full data fetch would need auth)
+  photos.forEach(function(ph){
+    var el = document.getElementById('photo-'+ph.id);
+    if(el) el.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:6px;color:var(--text3)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span style="font-size:11px">'+ph.angle+'</span></div><div class="photo-angle">'+ph.angle+'</div>';
+  });
+}
+
+async function postNote() {
+  var name  = document.getElementById('t-name').value.trim();
+  var week  = document.getElementById('t-week').value;
+  var loom  = document.getElementById('t-loom').value.trim();
+  var msg   = document.getElementById('t-msg').value.trim();
+  if (!msg && !loom) { alert('Add a message or Loom URL'); return; }
+  var btn = document.querySelector('[onclick="postNote()"]');
+  btn.disabled = true;
+  var r = await sb.rpc('post_trainer_note', {
+    p_token: TOKEN, p_week_of: week || new Date().toISOString().split('T')[0],
+    p_loom_url: loom, p_message: msg, p_trainer_email: name
+  });
+  btn.disabled = false;
+  if (r.error || (r.data && r.data.error)) {
+    alert('Error: ' + (r.error ? r.error.message : r.data.error));
+  } else {
+    var f = document.getElementById('post-flash');
+    f.classList.add('show'); setTimeout(function(){f.classList.remove('show');}, 2500);
+    document.getElementById('t-msg').value = '';
+    document.getElementById('t-loom').value = '';
+  }
+}
+
+load();
+</script>
+</body>
+</html>
