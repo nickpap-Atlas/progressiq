@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practice Intelligence — Sports & Spinal Chiropractic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0D1117;
+      --surface: #161B22;
+      --surface2: #1C2230;
+      --border: #21262D;
+      --green: #00C853;
+      --green-dim: rgba(0,200,83,0.12);
+      --amber: #FFB300;
+      --amber-dim: rgba(255,179,0,0.12);
+      --red: #F44336;
+      --red-dim: rgba(244,67,54,0.12);
+      --text: #E6EDF3;
+      --text-muted: #7D8590;
+      --text-dim: #4D5566;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 20px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .header-title h1 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .header-title p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .header-date {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .header-date .date-main {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .header-date .date-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .live-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 4px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 600px) {
+      .cards-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 14px;
+    }
+    .card-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .card-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    .card-value.green { color: var(--green); }
+    .card-value.amber { color: var(--amber); }
+    .card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .card-sub span {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+    .pill.green { background: var(--green-dim); color: var(--green); }
+    .pill.amber { background: var(--amber-dim); color: var(--amber); }
+    .pill.red { background: var(--red-dim); color: var(--red); }
+
+    /* ── REVENUE CHART ── */
+    .chart-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .chart-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chart-header-left h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .chart-header-left p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .chart-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      text-align: right;
+    }
+    .meta-item .meta-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .meta-item .meta-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 2px;
+    }
+    .meta-item .meta-val.red { color: var(--red); }
+    .meta-item .meta-val.green { color: var(--green); }
+
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 120px;
+    }
+    .bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .bar-amount {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-align: center;
+    }
+    .bar {
+      width: 100%;
+      border-radius: 6px 6px 2px 2px;
+      background: var(--green);
+      transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 0;
+      position: relative;
+    }
+    .bar.today {
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(0,200,83,0.35);
+    }
+    .bar.dim { background: #1E3A2F; }
+    .bar.zero { background: var(--surface2); }
+    .bar-day {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .bar-day.today { color: var(--green); font-weight: 700; }
+
+    .progress-track {
+      margin-top: 14px;
+      background: var(--surface2);
+      border-radius: 4px;
+      height: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 4px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── APPOINTMENT LIST ── */
+    .appt-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .appt-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .appt-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .appt-count {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .appt-list {
+      max-height: 360px;
+      overflow-y: auto;
+    }
+    .appt-list::-webkit-scrollbar { width: 4px; }
+    .appt-list::-webkit-scrollbar-track { background: transparent; }
+    .appt-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .appt-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .appt-item:last-child { border-bottom: none; }
+    .appt-item:hover { background: var(--surface2); }
+    .appt-item.next-up {
+      background: rgba(0,200,83,0.04);
+      border-left: 3px solid var(--green);
+      padding-left: 17px;
+    }
+    .appt-time {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 52px;
+      flex-shrink: 0;
+    }
+    .appt-time.next { color: var(--green); }
+    .appt-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .appt-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .appt-type {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .appt-badge {
+      flex-shrink: 0;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .badge-confirmed { background: var(--green-dim); color: var(--green); }
+    .badge-unconfirmed { background: var(--amber-dim); color: var(--amber); }
+    .badge-cancelled { background: var(--red-dim); color: var(--red); }
+
+    .appt-gap {
+      padding: 8px 20px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .appt-gap span {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* ── RETENTION ── */
+    .retention-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .retention-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .retention-big {
+      font-size: 52px;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+    .retention-detail {
+      flex: 1;
+    }
+    .retention-detail h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .retention-detail p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .retention-compare {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+    }
+    .retention-track {
+      background: var(--surface2);
+      border-radius: 6px;
+      height: 10px;
+      overflow: hidden;
+    }
+    .retention-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green) 0%, #69F0AE 100%);
+      border-radius: 6px;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0;
+    }
+
+    /* ── APPOINTMENT TYPES ── */
+    .types-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .type-row {
+      margin-bottom: 14px;
+    }
+    .type-row:last-child { margin-bottom: 0; }
+    .type-row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .type-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .type-stats {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+    .type-revenue {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .type-track {
+      background: var(--surface2);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .type-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 4px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0;
+    }
+    .type-fill.dim1 { background: #00C853; }
+    .type-fill.dim2 { background: #00963E; }
+    .type-fill.dim3 { background: #1E5C2F; }
+
+    /* ── INSIGHTS ── */
+    .insights-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    @media (min-width: 680px) {
+      .insights-grid { flex-direction: row; }
+    }
+    .insight-card {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .insight-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--green);
+    }
+    .insight-emoji {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    .insight-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+    .insight-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 16px 32px;
+      text-align: center;
+    }
+    .footer-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .footer-demo .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+    }
+    .footer-brand {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .footer-brand a {
+      color: var(--green);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="logo-dot">🦴</div>
+      <div class="header-title">
+        <h1>Sports &amp; Spinal Chiropractic</h1>
+        <p>Practice Intelligence — powered by Cliniko</p>
+      </div>
+    </div>
+    <div class="header-date">
+      <div class="date-main" id="today-date"></div>
+      <div class="date-sub"><span class="live-dot"></span>Live</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SECTION 1: TODAY'S OVERVIEW -->
+  <section>
+    <div class="section-label">Today's Overview</div>
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-label">Appointments Today</div>
+        <div class="card-value">14</div>
+        <div class="card-sub">
+          <span>11</span> confirmed &nbsp;·&nbsp; <span>2</span> unconfirmed
+        </div>
+        <div class="pill red">1 cancelled</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Revenue Today</div>
+        <div class="card-value green">$1,820</div>
+        <div class="card-sub">Estimated &nbsp;·&nbsp; excl. cancellation</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">No-show Rate (This Week)</div>
+        <div class="card-value amber">8.3%</div>
+        <div class="pill amber">↑ vs 6.1% last wk</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Next Appointment</div>
+        <div class="card-value" style="font-size:20px; padding-top:2px;">John M.</div>
+        <div class="card-sub" style="margin-top:4px;">
+          <span>1:00pm</span> — Initial Consult
+        </div>
+        <div class="pill green">↑ Next up</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: WEEKLY REVENUE CHART -->
+  <section>
+    <div class="section-label">Weekly Revenue</div>
+    <div class="chart-wrap">
+      <div class="chart-header">
+        <div class="chart-header-left">
+          <h2>This Week — Mon 28 Apr to Sun 4 May</h2>
+          <p>Daily billing totals (est.)</p>
+        </div>
+        <div class="chart-meta">
+          <div class="meta-item">
+            <div class="meta-label">Total</div>
+            <div class="meta-val green">$10,160</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Target</div>
+            <div class="meta-val">$12,000</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Gap</div>
+            <div class="meta-val red">−$1,840</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bar-chart" id="bar-chart">
+        <!-- built by JS -->
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="week-progress" style="width:0%"></div>
+      </div>
+      <div class="progress-label">
+        <span>$0</span>
+        <span>84.7% of target</span>
+        <span>$12,000</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: APPOINTMENTS LIST -->
+  <section>
+    <div class="section-label">Today's Schedule</div>
+    <div class="appt-wrap">
+      <div class="appt-header">
+        <h2>Appointment List</h2>
+        <div class="appt-count">14 appointments</div>
+      </div>
+      <div class="appt-list" id="appt-list">
+        <!-- built by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: PATIENT RETENTION -->
+  <section>
+    <div class="section-label">Patient Retention</div>
+    <div class="retention-wrap">
+      <div class="retention-inner">
+        <div class="retention-big">67%</div>
+        <div class="retention-detail">
+          <h3>Rebooked within 30 days</h3>
+          <p>This month — April 2026</p>
+          <div class="retention-compare">
+            ↑ Up from 61% last month &nbsp;(+6 pts)
+          </div>
+        </div>
+      </div>
+      <div class="retention-track">
+        <div class="retention-fill" id="retention-fill"></div>
+      </div>
+      <div class="progress-label" style="margin-top:6px;">
+        <span>0%</span>
+        <span style="color:var(--green); font-weight:600;">67% this month</span>
+        <span>100%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: TOP APPOINTMENT TYPES -->
+  <section>
+    <div class="section-label">Top Appointment Types — April 2026</div>
+    <div class="types-wrap">
+
+      <div class="type-row">
+        <div class="type-row-header">
+          <div class="type-name">Treatment</div>
+          <div class="type-stats">
+            142 appointments &nbsp;·&nbsp; <span class="type-revenue">$18,460</span>
+          </div>
+        </div>
+        <div class="type-track">
+          <div class="type-fill dim1" data-pct="100"></div>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-row-header">
+          <div class="type-name">Remedial Massage</div>
+          <div class="type-stats">
+            31 appointments &nbsp;·&nbsp; <span class="type-revenue">$3,875</span>
+          </div>
+        </div>
+        <div class="type-track">
+          <div class="type-fill dim3" data-pct="21"></div>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-row-header">
+          <div class="type-name">Initial Consult</div>
+          <div class="type-stats">
+            23 appointments &nbsp;·&nbsp; <span class="type-revenue">$4,370</span>
+          </div>
+        </div>
+        <div class="type-track">
+          <div class="type-fill dim2" data-pct="16"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 6: INSIGHTS -->
+  <section>
+    <div class="section-label">AI Insights</div>
+    <div class="insights-grid">
+
+      <div class="insight-card">
+        <div class="insight-emoji">⚡</div>
+        <div class="insight-text">
+          <strong>Tuesday afternoon has your highest no-show rate (18%).</strong> Consider sending an SMS reminder 2 hours before to reduce missed appointments.
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-emoji">📈</div>
+        <div class="insight-text">
+          <strong>Initial consults are up 34% this month</strong> — your Google reviews are working. Keep asking happy patients to leave a review.
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-emoji">💰</div>
+        <div class="insight-text">
+          <strong>Friday is your highest revenue day.</strong> Consider adding a Saturday morning session to capture patients who can't attend during the week.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>
+    <div class="footer-demo">
+      <div class="dot"></div>
+      Demo only — connect your Cliniko API to see live data
+    </div>
+  </div>
+  <div class="footer-brand">
+    Built by <a href="mailto:nick@papprojects.com.au">Pap Projects</a> &nbsp;·&nbsp; nick@papprojects.com.au
+  </div>
+</footer>
+
+<script>
+  // ── DATE ──
+  const dateEl = document.getElementById('today-date');
+  const now = new Date();
+  dateEl.textContent = now.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
+  // ── BAR CHART ──
+  const days = [
+    { label: 'Mon', amount: 1200, today: false },
+    { label: 'Tue', amount: 1650, today: false },
+    { label: 'Wed', amount: 2100, today: false },
+    { label: 'Thu', amount: 1980, today: false },
+    { label: 'Fri', amount: 2340, today: true },
+    { label: 'Sat', amount: 890, today: false },
+    { label: 'Sun', amount: 0, today: false },
+  ];
+  const maxAmt = Math.max(...days.map(d => d.amount));
+  const chartEl = document.getElementById('bar-chart');
+
+  days.forEach(d => {
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+
+    const amtLabel = document.createElement('div');
+    amtLabel.className = 'bar-amount';
+    amtLabel.textContent = d.amount > 0 ? '$' + (d.amount >= 1000 ? (d.amount/1000).toFixed(1) + 'k' : d.amount) : '';
+
+    const bar = document.createElement('div');
+    const pct = maxAmt > 0 ? (d.amount / maxAmt) * 100 : 0;
+    bar.className = 'bar' + (d.today ? ' today' : '') + (d.amount === 0 ? ' zero' : '');
+    bar.style.height = '0px';
+    bar.dataset.pct = pct;
+    bar.dataset.maxH = 100; // px
+
+    const dayLabel = document.createElement('div');
+    dayLabel.className = 'bar-day' + (d.today ? ' today' : '');
+    dayLabel.textContent = d.label;
+
+    col.appendChild(amtLabel);
+    col.appendChild(bar);
+    col.appendChild(dayLabel);
+    chartEl.appendChild(col);
+  });
+
+  // ── APPOINTMENTS ──
+  const appointments = [
+    { time: '9:00am',  name: 'Sarah M.',  type: 'Initial Consult',   status: 'confirmed' },
+    { time: '9:30am',  name: 'James T.',  type: 'Treatment',         status: 'confirmed' },
+    { time: '10:00am', name: 'Emma K.',   type: 'Treatment',         status: 'confirmed' },
+    { time: '10:30am', name: null,        type: null,                status: 'gap' },
+    { time: '11:00am', name: 'Chris B.',  type: 'Remedial Massage',  status: 'confirmed' },
+    { time: '11:30am', name: 'Lucy P.',   type: 'Treatment',         status: 'cancelled' },
+    { time: '12:00pm', name: 'Aiden W.',  type: 'Treatment',         status: 'confirmed' },
+    { time: '12:30pm', name: 'Sophie L.', type: 'Remedial Massage',  status: 'confirmed' },
+    { time: '1:00pm',  name: 'John M.',   type: 'Initial Consult',   status: 'confirmed', nextUp: true },
+    { time: '1:30pm',  name: 'Mark D.',   type: 'Treatment',         status: 'unconfirmed' },
+    { time: '2:00pm',  name: 'Anna R.',   type: 'Treatment',         status: 'confirmed' },
+    { time: '2:30pm',  name: 'David C.',  type: 'Treatment',         status: 'confirmed' },
+    { time: '3:00pm',  name: 'Priya S.',  type: 'Remedial Massage',  status: 'unconfirmed' },
+    { time: '3:30pm',  name: 'Tom B.',    type: 'Treatment',         status: 'confirmed' },
+    { time: '4:00pm',  name: 'Grace H.',  type: 'Treatment',         status: 'confirmed' },
+    { time: '4:30pm',  name: 'Liam F.',   type: 'Initial Consult',   status: 'confirmed' },
+  ];
+
+  const listEl = document.getElementById('appt-list');
+  appointments.forEach(a => {
+    if (a.status === 'gap') {
+      const gap = document.createElement('div');
+      gap.className = 'appt-gap';
+      gap.innerHTML = '<span>10:30am — No appointment scheduled</span>';
+      listEl.appendChild(gap);
+      return;
+    }
+
+    const item = document.createElement('div');
+    item.className = 'appt-item' + (a.nextUp ? ' next-up' : '');
+
+    const badgeClass = a.status === 'confirmed' ? 'badge-confirmed'
+                     : a.status === 'cancelled' ? 'badge-cancelled'
+                     : 'badge-unconfirmed';
+    const badgeText = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+
+    item.innerHTML = `
+      <div class="appt-time${a.nextUp ? ' next' : ''}">${a.time}</div>
+      <div class="appt-info">
+        <div class="appt-name">${a.name}${a.nextUp ? ' ✦' : ''}</div>
+        <div class="appt-type">${a.type}</div>
+      </div>
+      <div class="appt-badge ${badgeClass}">${badgeText}</div>
+    `;
+    listEl.appendChild(item);
+  });
+
+  // ── ANIMATE ON LOAD ──
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      // bars
+      document.querySelectorAll('.bar').forEach(bar => {
+        const pct = parseFloat(bar.dataset.pct);
+        bar.style.height = (pct) + 'px';
+      });
+
+      // week progress
+      document.getElementById('week-progress').style.width = '84.7%';
+
+      // retention
+      document.getElementById('retention-fill').style.width = '67%';
+
+      // type bars
+      document.querySelectorAll('.type-fill').forEach(el => {
+        el.style.width = el.dataset.pct + '%';
+      });
+
+    }, 150);
+  });
+</script>
+
+</body>
+</html>
